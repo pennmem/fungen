@@ -43,17 +43,20 @@ class FunctionGenerator(object):
     """Interface to SCPI-compliant function generators.
 
     :param str address: NI VISA resource address
+    :param int timeout: Timeout in ms (Default: ``None``).
     :param ResourceManager resource_manager: A pre-defined
         :class:`ResourceManager` or ``None`` to create a new one.
     :param bool close_on_exit: When True (the default), close the resource
         manager on exit.
 
     """
-    def __init__(self, address, resource_manager=None, close_on_exit=True):
+    def __init__(self, address, timeout=None, resource_manager=None,
+                 close_on_exit=True):
         self.rm = resource_manager or ResourceManager()
         self.device = self.rm.open_resource(address)
+        self.device.timeout = timeout
         self.close_on_exit = close_on_exit
-        logger.info(self.id)
+        # logger.info(self.id)
 
     def __enter__(self):
         return self
