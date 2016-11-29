@@ -18,7 +18,7 @@ class Waveform(object):
         assert len(data.shape) == 1
 
         self.sample_rate = sample_rate
-        self.amplitude = data.max()
+        self.amplitude = max(abs(data))
         self.data = data / self.amplitude
 
     def write_file(self, filename):
