@@ -2,6 +2,7 @@
 
 from __future__ import division
 import numpy as np
+from functools import partial
 
 
 class Waveform(object):
@@ -23,7 +24,7 @@ class Waveform(object):
     def write_file(self, filename):
         """Override to write to a file in the appropriate format."""
 
-    def write_to_device(self, dev, name="func", toggle_output=True):
+    def write_to_device(self, dev, name="func", toggle_output=True, echo=False):
         """Override to write to the VISA device.
 
         :param FunctionGenerator dev:
@@ -33,16 +34,18 @@ class Waveform(object):
             output state won't be changed.
 
         """
-        if toggle_output:
-            dev.write("OUTPUT OFF")
-
-        dev.write("data:arb %s, %s" % (name, ",".join([str(x) for x in self.data])))
-        dev.write("func:arb %s" % name)
-        dev.write("func:arb:srate " + str(self.sample_rate))
-        dev.write("voltage:amplitude %s V" % str(self.amplitude))
+        write = partial(dev.write, echo=echo)
 
         if toggle_output:
-            dev.write("OUTPUT ON")
+            write("OUTPUT OFF")
+
+        write("data:arb %s, %s" % (name, ",".join([str(x) for x in self.data])))
+        write("func:arb %s" % name)
+        write("func:arb:srate " + str(self.sample_rate))
+        write("voltage:amplitude %s V" % str(self.amplitude))
+
+        if toggle_output:
+            write("OUTPUT ON")
 
 
 if __name__ == "__main__":
