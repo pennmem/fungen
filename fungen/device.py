@@ -45,8 +45,8 @@ class FunctionGenerator(object):
     :param str address: NI VISA resource address
     :param ResourceManager resource_manager: A pre-defined
         :class:`ResourceManager` or ``None`` to create a new one.
-    :param bool close_on_exit: When True (the default), close the device and
-        resource managers on close.
+    :param bool close_on_exit: When True (the default), close the resource
+        manager on exit.
 
     """
     def __init__(self, address, resource_manager=None, close_on_exit=True):
@@ -59,8 +59,8 @@ class FunctionGenerator(object):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        self.device.close()
         if self.close_on_exit:
-            self.device.close()
             self.rm.close()
 
     @property
