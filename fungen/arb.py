@@ -19,7 +19,6 @@ class Waveform(object):
         self.sample_rate = sample_rate
         self.amplitude = data.max()
         self.data = data / self.amplitude
-        print(self.data)
 
     def write_file(self, filename):
         """Override to write to a file in the appropriate format."""
