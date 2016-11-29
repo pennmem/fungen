@@ -78,6 +78,18 @@ class FunctionGenerator(object):
         on_or_off = "ON" if value else "OFF"
         self.device.write("OUTPUT %s" % on_or_off)
 
+    def write(self, command, echo=True):
+        """Wraps the VISA write command."""
+        if echo:
+            print(command)
+        return self.device.write(command)
+
+    def ask(self, command, echo=True):
+        """Wraps the PyVISA ``ask`` method."""
+        if echo:
+            print(command)
+        return self.device.ask(command)
+
     @check
     def set_function(self, function):
         """Set the function to be generated.
