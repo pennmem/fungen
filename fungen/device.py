@@ -56,6 +56,7 @@ class FunctionGenerator(object):
         self.device = self.rm.open_resource(address)
         self.device.timeout = timeout
         self.close_on_exit = close_on_exit
+        self.channel = 1
         # logger.info(self.id)
 
     def __enter__(self):
@@ -79,7 +80,7 @@ class FunctionGenerator(object):
     @output.setter
     def output(self, value):
         on_or_off = "ON" if value else "OFF"
-        self.device.write("OUTPUT %s" % on_or_off)
+        self.device.write("OUTPUT%s %s" %(self.channel, on_or_off))
 
     def write(self, command, echo=True):
         """Wraps the VISA write command."""
@@ -100,7 +101,7 @@ class FunctionGenerator(object):
         :param str function:
 
         """
-        return self.device.write("FUNCtion %s" % function)
+        return self.device.write("FUNCtion%s %s" %(self.channel, function))
 
     @check
     def set_amplitude(self, amplitude, units="VPP"):
