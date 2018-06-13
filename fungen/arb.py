@@ -37,15 +37,15 @@ class Waveform(object):
         write = partial(dev.write, echo=echo)
 
         if toggle_output:
-            write("OUTPUT OFF")
+            write("OUTPUT%s OFF" %(dev.channel))
 
-        write("data:arb %s, %s" % (name, ",".join([str(x) for x in self.data])))
-        write("func:arb %s" % name)
-        write("func:arb:srate " + str(self.sample_rate))
-        write("voltage:amplitude %s V" % str(self.amplitude))
+        write("SOURCE%s:data:arb %s, %s" % (dev.channel, name, ",".join([str(x) for x in self.data])))
+        write("SOURCE%s:func:arb %s" % (dev.channel, name))
+        write("SOURCE%s:func:arb:srate %s" % (dev.channel, str(self.sample_rate)))
+        write("SOURCE%s:voltage:amplitude %s V" % (dev.channel, str(self.amplitude)))
 
         if toggle_output:
-            write("OUTPUT ON")
+            write("OUTPUT%s ON" %(dev.channel))
 
 
 if __name__ == "__main__":
