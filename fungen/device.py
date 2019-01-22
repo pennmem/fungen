@@ -70,12 +70,12 @@ class FunctionGenerator(object):
     @property
     def id(self):
         """Property that queries the device for and returns its ID string."""
-        return self.device.ask("*IDN?")
+        return self.device.query("*IDN?")
 
     @property
     def output(self):
         """Property to get or set device output enabled state."""
-        return self.device.ask("OUTPUT?")
+        return self.device.query("OUTPUT?")
 
     @output.setter
     def output(self, value):
@@ -88,11 +88,11 @@ class FunctionGenerator(object):
             print(command)
         return self.device.write(command)
 
-    def ask(self, command, echo=True):
-        """Wraps the PyVISA ``ask`` method."""
+    def query(self, command, echo=True):
+        """Wraps the PyVISA ``query`` method."""
         if echo:
             print(command)
-        return self.device.ask(command)
+        return self.device.query(command)
 
     @check
     def set_function(self, function):
